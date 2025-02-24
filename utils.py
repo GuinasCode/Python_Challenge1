@@ -1,4 +1,4 @@
-# Funções auxiliares (geração de IDs, cálculos, etc.)
+
 from datetime import datetime
 
 status = ["Pendente","Em prepapro", "Pronto","Entregue"]
