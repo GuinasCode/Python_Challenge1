@@ -27,7 +27,7 @@ class Order:
         itens_lista = [item["nome"] for item in self.itens]
         return f"Pedido {self.id} | Cliente: {self.client} | Status: {self.status} | Itens: {', '.join(itens_lista)} | Total: R$ {self.valor_total:.2f}"
     
-    if __name__ == "__main__":
+""" if __name__ == "__main__":
         menu = getMenu.__func__()
         if menu:
             print("\n🍽️  Cardápio do Restaurante 🍽️")
@@ -38,4 +38,4 @@ class Order:
             for item in menu:
                 item_id, nome, preco = item
                 print(f"{item_id:<5} {nome:<35} R$ {preco:>7.2f}")
-            print("-" * 55)        
+            print("-" * 55)          """

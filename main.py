@@ -34,20 +34,11 @@ def main():
             nome_cliente = input("\nNome do Cliente: ").strip()
             codigos = input("Digite os códigos dos itens separados por vírgula: ").strip().split(",")
 
-            itens_pedido = []
-            for cod in codigos:
-                try:
-                    cod = int(cod.strip())
-                    if cod in PRECOS_PRATOS:
-                        itens_pedido.append({"nome": PRECOS_PRATOS[cod][0], "preco": PRECOS_PRATOS[cod][1]})
-                    else:
-                        print(f"Código {cod} não encontrado no menu.")
-                except ValueError:
-                    print(f"Entrada inválida: {cod} não é um número.")
-
-            if itens_pedido:
-                id_pedido = restaurante.makeOrder(nome_cliente, itens_pedido)
-                print(f"Pedido {id_pedido} para {nome_cliente} adicionado com sucesso!")
+            mensagem = restaurante.makeOrder(nome_cliente, codigos)
+            if mensagem:
+                print(mensagem)
+            else:
+                print("Erro ao criar o pedido.")
 
         elif opcao == "2":
             id_pedido = input("\nID do Pedido a ser atualizado: ").strip()
