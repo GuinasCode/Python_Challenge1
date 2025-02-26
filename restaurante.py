@@ -10,7 +10,6 @@ class Restaurate:
         connection = db.connect()
         cursor = connection.cursor()
 
-    # Verifica o tipo de entrada e converte para uma lista de IDs
         if isinstance(itens, str):    
             itens_ids = [int(item.strip()) for item in itens.split(",") if item.strip().isdigit()]
         elif isinstance(itens, list):
@@ -23,7 +22,6 @@ class Restaurate:
             connection.close()
             return
 
-        # Criar a query para buscar os itens pelo ID
         placeholders = ",".join(["?"] * len(itens_ids))
         cursor.execute(f"SELECT id, item, valor FROM menu WHERE id IN ({placeholders})", itens_ids)
         itens_encontrados = cursor.fetchall()
@@ -33,17 +31,15 @@ class Restaurate:
             connection.close()
             return
 
-        # Formatar os itens e calcular o valor total
         itens_formatados = [f"{item[1]} (R$ {item[2]:.2f})" for item in itens_encontrados]  
         valor_total = sum(item[2] for item in itens_encontrados)
 
-        # Inserir pedido no banco de dados
         cursor.execute('''
             INSERT INTO orders (data, nome_cliente, itens, status, valor_total)
             VALUES (date('now'), ?, ?, 'Pendente', ?);
         ''', (cliente, ", ".join(itens_formatados), valor_total))
 
-        order_id = cursor.lastrowid  # Obtém o ID do pedido recém-criado
+        order_id = cursor.lastrowid 
 
         connection.commit()
         connection.close()
