@@ -1,8 +1,6 @@
 from restaurante import Restaurate
-from database import Database
 
 restaurante = Restaurate()
-database = Database()
 
 def main():
     while True:

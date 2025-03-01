@@ -1,5 +1,5 @@
 from utils import idGenerator, status
-from database import Database
+from utils import DatabaseManager
 
 class Order:
     idGenerator()
@@ -14,9 +14,9 @@ class Order:
 
     @staticmethod
     def getMenu():
-        database = Database()
-        menu = database.fetch_all('''SELECT * FROM menu;''')
-        return menu
+        with DatabaseManager() as db: 
+            menu = db.execute_query('''SELECT * FROM menu;''')
+            return menu
    
     def statusUpdate(self):
         if self.status != "Entregue":
