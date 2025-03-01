@@ -33,7 +33,7 @@ Um restaurante precisa de um sistema para gerenciar seus pedidos de forma eficie
 ---
 🛠️ **Esse sistema ajudará o restaurante a manter um controle eficiente dos pedidos, melhorando a organização e agilidade no atendimento!** 🚀
 
-##Challenge 2
+## Challenge 2
 **Integração com Banco de Dados**
 Descrição: Substitua o armazenamento em memória por um banco de dados relacional ou NoSQL.
 Objetivo: Persistir os dados de forma segura e eficiente, permitindo escalabilidade e consultas complexas.
