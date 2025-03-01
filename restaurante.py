@@ -1,5 +1,6 @@
 from utils import DatabaseManager
 from pedido import Order
+from datetime import datetime
 
 class Restaurate:
     def __init__(self):
@@ -54,9 +55,61 @@ class Restaurate:
                 return f"Pedido {id} atualizado para {pedido.status}"
         return "Número do pedido incorreto."
 
-    def listOrders(self):
-        return [pedido.orderStatus() for pedido in self.pedidos]
+    def listOrders(self, date=None):
+        if not date:        
+            _date = datetime.today().strftime('%Y-%m-%d')
+        else:
+            _date = datetime.strptime(date, "%d/%m/%Y").strftime("%Y-%m-%d")
+
+        with DatabaseManager() as db:
+            orders = db.execute_query('SELECT * FROM orders WHERE data = ?', (_date,))
+
+        if not orders:
+            return "Nenhum pedido cadastrado nesta data."
+        
+        _date = datetime.strptime(_date, "%Y-%m-%d").strftime("%d/%m/%Y")
+        formatted_orders = [f"\n=== Pedidos de {_date} ==="]
+
+        for order in orders:
+            order_id, data, nome_cliente, itens, status, valor_total = order
+            itens_formatados = "\n - ".join(itens.split(", "))
+            
+            formatted_orders.append(
+                f"\nPedido ID: {order_id}\n"
+                f"\nCliente: {nome_cliente}\n"
+                f"\nItens do Pedido:\n - {itens_formatados}\n"
+                f"\nStatus: {status}\n"
+                f"\nValor Total: R$ {valor_total:.2f}\n"
+                f"{'-'*30}"
+            )
+        return "\n".join(formatted_orders)
     
+    def listAllOrders(self):
+        with DatabaseManager() as db:
+            orders = db.execute_query('SELECT * FROM orders')
+
+        if not orders:
+            return "Nenhum pedido cadastrado."      
+
+        formatted_orders = [f"\n=== Pedidos ==="]
+
+        for order in orders:
+            order_id, data, nome_cliente, itens, status, valor_total = order
+            itens_formatados = "\n - ".join(itens.split(", "))
+
+            data = datetime.strptime(data, "%Y-%m-%d").strftime("%d/%m/%Y")
+            
+            formatted_orders.append(
+                f"\nPedido ID: {order_id}\n"
+                f"\nData do Pedido: {data}\n"
+                f"\nCliente: {nome_cliente}\n"
+                f"\nItens do Pedido:\n - {itens_formatados}\n"
+                f"\nStatus: {status}\n"
+                f"\nValor Total: R$ {valor_total:.2f}\n"
+                f"{'-'*30}"
+            )
+        return "\n".join(formatted_orders)
+
     def listPendingOrders(self):
         return [pedido.orderStatus() for pedido in self.pedidos if pedido.status != "Entregue"]
     

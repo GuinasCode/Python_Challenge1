@@ -8,7 +8,7 @@ def main():
         print("0 Listar Cardápio")
         print("1 Adicionar Pedido")
         print("2 Atualizar Status do Pedido") 
-        print("3 Listar Todos os Pedidos")
+        print("3 Listar Pedidos")
         print("4 Listar Pedidos Pendentes")
         print("5 Mostrar Receita do Dia")
         print("6 Sair")
@@ -43,10 +43,23 @@ def main():
             print(restaurante.statusUpdate(id_pedido))
 
         elif opcao == "3":
-            print("\nTodos os Pedidos:")
-            pedidos = restaurante.listOrders()
-            for pedido in pedidos:
-                print(pedido)
+            sub_opcao = input("\nEscolha:\n"
+                              "1 - Para mostrar os pedidos de hoje\n"
+                              "2 - Para mostrar os pedidos de uma outra data\n"
+                              "3 - Para mostrar todos os pedidos registrados\n")
+            
+            if sub_opcao == "1":
+                pedidos = restaurante.listOrders()
+                print(pedidos)
+            
+            elif sub_opcao == "2":
+                data_input = input("Digite a data que deseja consultar no formato DD/MM/AAAA: ")
+                pedidos = restaurante.listOrders(data_input)
+                print(pedidos)
+            
+            elif sub_opcao == "3":
+                pedidos = restaurante.listAllOrders()
+                print(pedidos)
 
         elif opcao == "4":
             print("\nPedidos Pendentes:")

@@ -1,28 +1,19 @@
-
 from datetime import datetime
 import sqlite3
+import os
 
 status = ["Pendente","Em prepapro", "Pronto","Entregue"]
-
-class idGenerator:
-        idPedido = {}
-    
-        @classmethod    
-        def gerarId(cls):
-            data_atual = datetime.now().strftime("%y%m%d")
-            cls.idPedido[data_atual] = cls.idPedido.get(data_atual, 0) + 1
-        
-            indice = f"{cls.idPedido[data_atual]:02d}"
-            return f"{data_atual}{indice}"
 
 class DatabaseManager:
     def __init__(self, db_name="restaurante.db"):
         self.db_name = db_name
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+        self.db_path = os.path.join(base_dir, db_name)
         self.connection = None
         self.cursor = None
     
     def connect(self):
-        self.connection = sqlite3.connect(self.db_name)
+        self.connection = sqlite3.connect(self.db_path)
         self.cursor = self.connection.cursor()
         return self
     
