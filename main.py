@@ -1,19 +1,20 @@
-from restaurante import Restaurate
+from restaurante import Restaurante
 
-restaurante = Restaurate()
+restaurante = Restaurante()
 
 def main():
     while True:
-        print("Menu Principal:")
+        print("\nMenu Principal:\n")
         print("0 Listar Cardápio")
         print("1 Adicionar Pedido")
-        print("2 Atualizar Status do Pedido") 
-        print("3 Listar Pedidos")
-        print("4 Listar Pedidos Pendentes")
-        print("5 Mostrar Receita do Dia")
-        print("6 Sair")
+        print("2 Verificar Pedido")
+        print("3 Atualizar Status do Pedido") 
+        print("4 Listar Pedidos")
+        print("5 Listar Pedidos Pendentes")
+        print("6 Mostrar Receita")
+        print("7 Sair")
 
-        opcao = input("Escolha uma opção: ").strip()
+        opcao = input("\nEscolha uma opção: ").strip()
 
         if opcao == "0":
             menu = restaurante.getMenu()            
@@ -39,15 +40,21 @@ def main():
                 print("Erro ao criar o pedido.")
 
         elif opcao == "2":
+            pedido = input("\nInforme o id do pedido: ")
+            status_pedido = restaurante.checkOrderStatus(pedido)
+            print(status_pedido)
+
+        elif opcao == "3":
             id_pedido = input("\nID do Pedido a ser atualizado: ").strip()
             print(restaurante.statusUpdate(id_pedido))
 
-        elif opcao == "3":
-            sub_opcao = input("\nEscolha:\n"
-                              "1 - Para mostrar os pedidos de hoje\n"
-                              "2 - Para mostrar os pedidos de uma outra data\n"
-                              "3 - Para mostrar todos os pedidos registrados\n")
-            
+        elif opcao == "4":
+            print("\nEscolha\n"
+                    "1 - Para mostrar os pedidos de hoje\n"
+                    "2 - Para mostrar os pedidos de uma outra data\n"
+                    "3 - Para mostrar todos os pedidos registrados\n")
+            sub_opcao = input("\nEscolha:")
+
             if sub_opcao == "1":
                 pedidos = restaurante.listOrders()
                 print(pedidos)
@@ -61,16 +68,35 @@ def main():
                 pedidos = restaurante.listAllOrders()
                 print(pedidos)
 
-        elif opcao == "4":
-            print("\nPedidos Pendentes:")
-            pedidos_pendentes = restaurante.listPendingOrders()
-            for pedido in pedidos_pendentes:
-                print(pedido)
-
         elif opcao == "5":
-            print(f"\nReceita do Dia: R$ {restaurante.dailyRevenue():.2f}")
+            pedidos = restaurante.listPendingOrders()
+            print(pedidos)
 
         elif opcao == "6":
+            print("\nEscolha:\n"
+                   "1 - Para mostrar a receita de hoje.\n"
+                   "2 - Para mostrar a receiota de um dia específico.\n"
+                   "3 - Para mostrar a de um intervalo de datas específico.\n")
+            sub_opcao = input("\nEscolha:")
+
+            if sub_opcao == "1":
+                revenue = restaurante.getRevenue()
+                print(revenue)
+            
+            elif sub_opcao == "2":
+                print("\nA datas devem ser preenchidas no formato DD/MM/AAAA.")
+                data_input = input("Digite a data que deseja consultar no formato DD/MM/AAAA: ")
+                revenue = restaurante.getRevenue(data_input)
+                print(revenue)
+            
+            elif sub_opcao == "3":
+                print("\nTodas as datas devem ser preenchidas no formato DD/MM/AAAA.")
+                inicio = input("Digite a data inicial: ")
+                fim = input("Digite a data final: ")
+                revenue = restaurante.getRevenue(inicio, fim)
+                print(revenue)
+
+        elif opcao == "7":
             print("\nEncerrando o sistema. Até mais!")
             break
 
