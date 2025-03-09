@@ -162,8 +162,8 @@ class Order:
             if not start_date and not end_date:
                 revenue = db.execute_query('''SELECT SUM(valor_total) AS receita_hoje
                                            FROM orders
-                                           WHERE data = DATE('now');
-                                            ''')
+                                           WHERE data = ?;
+                                            ''', (datetime.today().strftime("%Y-%m-%d"),))
                 revenue = revenue[0][0] if revenue[0][0] else 0
                 return f"\nA receita total de hoje foi de R$ {revenue:.2f}\n"
             

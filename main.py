@@ -85,7 +85,7 @@ def main():
             
             elif sub_opcao == "2":
                 print("\nA datas devem ser preenchidas no formato DD/MM/AAAA.")
-                data_input = input("Digite a data que deseja consultar no formato DD/MM/AAAA: ")
+                data_input = input("Digite a data que deseja consultar: ")
                 revenue = restaurante.getRevenue(data_input)
                 print(revenue)
             
