@@ -1,34 +1,32 @@
-# Gerencia os pedidos (adicionar, atualizar, listar, etc)
-from menu import MENU
 from pedido import Order
 
-class Restaurate:
+class Restaurante:
     def __init__(self):
         self.pedidos = []
+       
+    def getMenu(self):
+        menu = Order.getMenu()
+        return menu
     
     def makeOrder(self, cliente, itens):
-        """Cria um novo pedido e adiciona à lista."""
-        pedido = Order(cliente, itens)
-        self.pedidos.append(pedido)
-        return pedido.id
+        order = Order(cliente=cliente, itens=itens, status="Pendente")
+        return order.new_order()
+    
+    def checkOrderStatus(self, id):
+        order = Order.check_order(id)
+        return f"O pedido {id} atualmente está: {order}"
     
     def statusUpdate(self, id):
-        """Atualiza o status do pedido."""
-        for pedido in self.pedidos:
-            if pedido.id == id:
-                pedido.statusUpdate()
-                return f"Pedido {id} atualizado para {pedido.status}"
-        return "Número do pedido incorreto."
-
-    def listOrders(self):
-        """Lista todos os pedidos do dia."""
-        return [pedido.orderStatus() for pedido in self.pedidos]
+        return Order.update_status(id)
     
+    def listOrders(self, date=None):
+        return Order.list_orders(date)
+    
+    def listAllOrders(self):
+        return Order.list_all_orders()
+  
     def listPendingOrders(self):
-        """Lista todos os pedidos pendentes."""
-        return [pedido.orderStatus() for pedido in self.pedidos if pedido.status != "Entregue"]
+        return Order.list_pending_orders()
     
-    def dailyRevenue(self):
-        return sum(pedido.valor_total for pedido in self.pedidos if pedido.status == "Entregue")
-
-
+    def getRevenue(self, start_date=None, end_date=None):
+        return Order.get_revenue(start_date, end_date)
