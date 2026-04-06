@@ -1,7 +1,7 @@
 import sqlite3
 import os
 
-status = ["Pendente","Em prepapro", "Pronto","Entregue"]
+status = ["Pendente", "Em preparo", "Pronto", "Entregue"]
 
 class DatabaseManager:
     def __init__(self, db_name="restaurante.db"):

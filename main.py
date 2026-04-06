@@ -75,7 +75,7 @@ def main():
         elif opcao == "6":
             print("\nEscolha:\n"
                    "1 - Para mostrar a receita de hoje.\n"
-                   "2 - Para mostrar a receiota de um dia específico.\n"
+                   "2 - Para mostrar a receita de um dia específico.\n"
                    "3 - Para mostrar a de um intervalo de datas específico.\n")
             sub_opcao = input("\nEscolha:")
 
