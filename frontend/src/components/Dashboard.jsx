@@ -1,10 +1,22 @@
 export default function Dashboard({ receitaHoje, totalPedidos, pendentes }) {
+  const cards = [
+    { label: 'Receita do dia', value: `R$ ${Number(receitaHoje || 0).toFixed(2)}` },
+    { label: 'Pedidos do dia', value: totalPedidos },
+    { label: 'Pedidos pendentes', value: pendentes },
+  ]
+
   return (
     <div>
-      <h2>Dashboard Gerencial</h2>
-      <div>Receita de hoje: R$ {Number(receitaHoje || 0).toFixed(2)}</div>
-      <div>Pedidos do dia: {totalPedidos}</div>
-      <div>Pedidos pendentes: {pendentes}</div>
+      <p className="eyebrow">Gerência</p>
+      <h1>Painel gerencial</h1>
+      <div className="dashboard-grid">
+        {cards.map((card) => (
+          <div key={card.label} className="dashboard-card">
+            <span>{card.label}</span>
+            <strong>{card.value}</strong>
+          </div>
+        ))}
+      </div>
     </div>
   )
 }

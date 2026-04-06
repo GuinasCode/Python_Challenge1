@@ -6,6 +6,8 @@ import pytest
 from fastapi.testclient import TestClient
 from passlib.hash import bcrypt
 
+from app.utils import build_placeholder_image
+
 TEST_DB = Path(__file__).resolve().parent / "test_restaurante.db"
 os.environ["RESTAURANTE_DB"] = str(TEST_DB)
 os.environ["JWT_SECRET"] = "test-secret"
@@ -21,19 +23,28 @@ def setup_db():
     cur = conn.cursor()
     cur.executescript(
         """
+        CREATE TABLE IF NOT EXISTS categories (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            nome TEXT NOT NULL UNIQUE,
+            ordem INTEGER NOT NULL DEFAULT 0
+        );
+
         CREATE TABLE IF NOT EXISTS orders (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             data DATE NOT NULL,
             nome_cliente TEXT NOT NULL,
             itens TEXT NOT NULL,
             status TEXT NOT NULL DEFAULT 'Pendente',
-            valor_total REAL NOT NULL
+            valor_total REAL NOT NULL,
+            order_items TEXT
         );
 
         CREATE TABLE IF NOT EXISTS menu (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             item TEXT NOT NULL,
-            valor REAL NOT NULL
+            valor REAL NOT NULL,
+            categoria_id INTEGER,
+            imagem_base64 TEXT
         );
 
         CREATE TABLE IF NOT EXISTS users (
@@ -48,12 +59,43 @@ def setup_db():
         );
         """
     )
+
     cur.executemany(
-        "INSERT INTO menu (item, valor) VALUES (?, ?)",
+        "INSERT INTO categories (nome, ordem) VALUES (?, ?)",
         [
-            ("Frango Grelhado", 32.9),
-            ("Massa ao Sugo", 28.5),
-            ("Suco Natural 500ml", 9.0),
+            ("Pratos executivos", 1),
+            ("Bebidas", 2),
+            ("Sobremesas", 3),
+            ("Sem categoria", 99),
+        ],
+    )
+
+    categories = {
+        nome: category_id
+        for category_id, nome in cur.execute("SELECT id, nome FROM categories")
+    }
+
+    cur.executemany(
+        "INSERT INTO menu (item, valor, categoria_id, imagem_base64) VALUES (?, ?, ?, ?)",
+        [
+            (
+                "Frango Grelhado",
+                32.9,
+                categories["Pratos executivos"],
+                build_placeholder_image("Frango Grelhado", "Pratos executivos"),
+            ),
+            (
+                "Massa ao Sugo",
+                28.5,
+                categories["Pratos executivos"],
+                build_placeholder_image("Massa ao Sugo", "Pratos executivos"),
+            ),
+            (
+                "Suco Natural 500ml",
+                9.0,
+                categories["Bebidas"],
+                build_placeholder_image("Suco Natural 500ml", "Bebidas"),
+            ),
         ],
     )
 

@@ -15,6 +15,7 @@ class DatabaseManager:
         self.connection = sqlite3.connect(self.db_path)
         self.connection.row_factory = sqlite3.Row
         self.cursor = self.connection.cursor()
+        self.cursor.execute("PRAGMA foreign_keys = ON")
         return self
 
     def execute_query(self, query: str, params: tuple[Any, ...] | None = None):
