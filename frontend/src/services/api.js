@@ -1,9 +1,16 @@
 import axios from 'axios'
 
-const api = axios.create({ baseURL: 'http://localhost:8000' })
+const api = axios.create({
+  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8000',
+})
 
 export function setAuthToken(token) {
   if (token) api.defaults.headers.common.Authorization = `Bearer ${token}`
+  else delete api.defaults.headers.common.Authorization
+}
+
+if (typeof window !== 'undefined') {
+  setAuthToken(window.localStorage.getItem('token'))
 }
 
 export const login = (login, senha) => api.post('/auth/login', { login, senha })
