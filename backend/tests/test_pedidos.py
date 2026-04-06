@@ -1,8 +1,14 @@
 def test_criar_pedido_valido(client, garcom_headers):
-    response = client.post("/pedidos", json={"nome_cliente": "João", "itens": [1, 2]}, headers=garcom_headers)
+    response = client.post(
+        "/pedidos",
+        json={"nome_cliente": "João", "itens": [{"item_id": 1, "quantidade": 2}, {"item_id": 3, "quantidade": 1}]},
+        headers=garcom_headers,
+    )
     assert response.status_code == 201
     body = response.json()
     assert body["id"]
+    assert body["valor_total"] == 74.8
+    assert body["itens_detalhados"][0]["quantidade"] == 2
 
 
 def test_criar_pedido_item_invalido(client, garcom_headers):
@@ -44,3 +50,14 @@ def test_listar_pedidos_por_data(client, garcom_headers):
     response = client.get("/pedidos?data=06/04/2026", headers=garcom_headers)
     assert response.status_code == 200
     assert isinstance(response.json(), list)
+
+
+def test_best_sellers_considera_quantidade(client, gerente_headers, garcom_headers):
+    client.post(
+        "/pedidos",
+        json={"nome_cliente": "Ranking", "itens": [{"item_id": 1, "quantidade": 3}, {"item_id": 3, "quantidade": 2}]},
+        headers=garcom_headers,
+    )
+    response = client.get("/relatorios/itens-mais-vendidos", headers=gerente_headers)
+    assert response.status_code == 200
+    assert response.json()[0]["quantidade"] >= 3

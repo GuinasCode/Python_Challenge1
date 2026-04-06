@@ -14,12 +14,18 @@ def list_menu(_user=Depends(get_current_user)):
 
 @router.post("", status_code=201)
 def create_menu_item(data: MenuIn, _user=Depends(require_roles("admin", "gerente"))):
-    return MenuModel.create(data.item, data.valor)
+    try:
+        return MenuModel.create(**data.model_dump())
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
 
 
 @router.put("/{item_id}")
 def update_menu_item(item_id: int, data: MenuIn, _user=Depends(require_roles("admin", "gerente"))):
-    updated = MenuModel.update(item_id, data.item, data.valor)
+    try:
+        updated = MenuModel.update(item_id, **data.model_dump())
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
     if not updated:
         raise HTTPException(status_code=404, detail="Item não encontrado")
     return updated

@@ -6,32 +6,41 @@ import { avancarStatus, criarPedido, listarMenu, listarPedidos } from '../servic
 export default function Garcom() {
   const [menu, setMenu] = useState([])
   const [pedidos, setPedidos] = useState([])
+  const [loading, setLoading] = useState(true)
 
   const carregar = async () => {
-    const [m, p] = await Promise.all([listarMenu(), listarPedidos()])
-    setMenu(m.data)
-    setPedidos(p.data)
+    try {
+      const [m, p] = await Promise.all([listarMenu(), listarPedidos()])
+      setMenu(m.data)
+      setPedidos(p.data)
+    } finally {
+      setLoading(false)
+    }
   }
 
   useEffect(() => {
     carregar()
   }, [])
 
+  if (loading) {
+    return <div className="page-shell"><div className="surface">Carregando ambiente do garçom...</div></div>
+  }
+
   return (
-    <div>
+    <div className="page-shell page-shell--stacked">
       <NovoPedido
         menu={menu}
         onSubmit={async (payload) => {
           const resp = await criarPedido(payload)
           alert(`Pedido ${resp.data.id} criado com sucesso`)
-          carregar()
+          await carregar()
         }}
       />
       <ListaPedidos
         pedidos={pedidos}
         onEntregar={async (id) => {
           await avancarStatus(id)
-          carregar()
+          await carregar()
         }}
       />
     </div>
