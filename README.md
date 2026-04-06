@@ -1,34 +1,46 @@
-Estou estudando Python e, por isso, pedi que o ChatGPT o seguinte:
-- Crie um problema que deve ser resolvido com um código python
-- O desafio deve ter um nível intermediário
-- O teor do desafio deve direcionar à uma implementação orientada à objetos
+# RESTAURANTE 🍽️
 
-# Problema: Gerenciamento de Pedidos em um Restaurante 🍽️
+Sistema de Gestão de Pedidos com backend FastAPI e frontend React.
 
-Um restaurante precisa de um sistema para gerenciar seus pedidos de forma eficiente. O sistema deve permitir:
+## Estrutura
 
-## 📌 Funcionalidades
+- `backend/` API REST, banco e testes.
+- `frontend/` aplicação React (Vite).
+- arquivos legados (`main.py`, `restaurante.py`, `pedido.py`) mantidos para referência CLI.
 
-1. **Registrar um novo pedido**, contendo:
-   - ID do pedido (gerado automaticamente)
-   - Nome do cliente
-   - Itens do pedido (lista de pratos)
-   - Status do pedido ("Pendente", "Em preparo", "Pronto", "Entregue")
-   - Valor total do pedido
+## Setup rápido
 
-2. **Atualizar o status de um pedido** informando o ID do pedido.
+### Backend
 
-3. **Exibir todos os pedidos** com seus detalhes.
+```bash
+python -m venv venv
+source venv/bin/activate
+pip install -r backend/requirements.txt
+cd backend
+python init_db.py
+python seed.py
+uvicorn app.main:app --reload --port 8000
+```
 
-4. **Listar apenas os pedidos pendentes**, ou seja, aqueles que ainda não foram entregues.
+### Frontend
 
-5. **Calcular o total de vendas do dia**, somando o valor dos pedidos entregues.
+```bash
+cd frontend
+npm install
+npm run dev
+```
 
-## 📜 Regras do Problema
+## Usuários de desenvolvimento
 
-- O **ID do pedido** deve ser único e gerado automaticamente.
-- O sistema deve permitir **atualizar o status do pedido** conforme necessário.
-- O **valor do pedido** deve ser calculado com base nos preços dos itens.
+- `admin` / `admin123` (trocar em produção)
+- `gerente` / `gerente123`
+- `garcom` / `garcom123`
+- `cozinha` / `cozinha123`
 
----
-🛠️ **Esse sistema ajudará o restaurante a manter um controle eficiente dos pedidos, melhorando a organização e agilidade no atendimento!** 🚀
+## Testes
+
+```bash
+cd backend
+pytest tests/ -v
+pytest tests/ -v --cov=app --cov-report=term-missing
+```
