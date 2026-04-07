@@ -212,7 +212,9 @@ button {
 }
 
 .menu-grid--uniform {
+  grid-template-columns: repeat(auto-fill, minmax(240px, 240px));
   grid-auto-rows: 1fr;
+  justify-content: start;
   align-items: stretch;
 }
 
@@ -604,6 +606,10 @@ button {
   .order-item-row__image {
     width: 100%;
     height: 180px;
+  }
+
+  .menu-grid--uniform {
+    grid-template-columns: 1fr;
   }
 
   .modal-backdrop {
