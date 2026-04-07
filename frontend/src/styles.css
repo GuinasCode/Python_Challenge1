@@ -483,6 +483,53 @@ button {
   object-fit: cover;
 }
 
+.helper-text {
+  display: block;
+  margin-top: 4px;
+  color: #64748b;
+}
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(15, 23, 42, 0.58);
+  backdrop-filter: blur(6px);
+}
+
+.modal-card {
+  width: min(760px, 100%);
+  max-height: calc(100vh - 48px);
+  overflow: auto;
+  border-radius: 26px;
+  background: #fff;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  box-shadow: 0 28px 60px rgba(15, 23, 42, 0.24);
+  padding: 24px;
+}
+
+.modal-card__header {
+  align-items: flex-start;
+}
+
+.modal-card__actions {
+  justify-content: flex-end;
+}
+
+.modal-close {
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 999px;
+  background: #e2e8f0;
+  color: #0f172a;
+  font-size: 1.6rem;
+  line-height: 1;
+}
+
 .login-screen {
   min-height: 100vh;
   display: grid;
@@ -543,5 +590,14 @@ button {
   .order-item-row__image {
     width: 100%;
     height: 180px;
+  }
+
+  .modal-backdrop {
+    padding: 12px;
+  }
+
+  .modal-card {
+    padding: 18px;
+    border-radius: 20px;
   }
 }
