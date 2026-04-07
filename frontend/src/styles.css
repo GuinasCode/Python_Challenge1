@@ -211,7 +211,17 @@ button {
   gap: 16px;
 }
 
+.menu-grid--uniform {
+  grid-template-columns: repeat(auto-fill, minmax(240px, 240px));
+  grid-auto-rows: 1fr;
+  justify-content: start;
+  align-items: stretch;
+}
+
 .menu-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
   border-radius: 22px;
   border: 1px solid rgba(148, 163, 184, 0.18);
@@ -231,9 +241,15 @@ button {
 }
 
 .menu-card__content {
+  flex: 1;
   display: grid;
+  grid-template-rows: 1fr auto;
   gap: 16px;
   padding: 16px;
+}
+
+.menu-card__content h4 {
+  min-height: 3rem;
 }
 
 .menu-card__price {
@@ -590,6 +606,10 @@ button {
   .order-item-row__image {
     width: 100%;
     height: 180px;
+  }
+
+  .menu-grid--uniform {
+    grid-template-columns: 1fr;
   }
 
   .modal-backdrop {

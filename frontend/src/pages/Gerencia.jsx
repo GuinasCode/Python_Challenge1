@@ -355,7 +355,7 @@ export default function Gerencia() {
                   <span className="pill">Ordem {categoria.ordem}</span>
                 </div>
 
-                <div className="menu-grid">
+                <div className="menu-grid menu-grid--uniform">
                   {categoria.itens.map((item) => (
                     <article key={item.id} className="menu-card menu-card--compact">
                       <img className="menu-card__image" src={item.imagem_base64} alt={item.item} />
